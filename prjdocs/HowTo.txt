@@ -128,3 +128,32 @@
             'PORT': '5432'
         }
     }
+
+11- Create The Models
+
+    .............
+    ..........
+
+
+12- Migrate models to db :
+
+    12.1 - First Create the migration
+            run :
+            $ python manage.py makemigrations scwebapp
+
+            then to migrate them to db , run :
+                $ python manage.py migrate
+
+    12.2 - create a user who can login to the admin site :
+            run :
+            $ python manage.py createsuperuser ( ex: admin , admin@nomail.com pass=123)
+
+    12.3 - Make the app (scwebapp) modifiable in the admin :
+
+            We need to tell the admin that Question objects have an admin interface.
+            To do this open the scwebapp/admin.py file, and edit it to look like this:
+
+                from django.contrib import admin
+                from .models import ModelClassName
+
+                admin.site.register(ModelClassName)
