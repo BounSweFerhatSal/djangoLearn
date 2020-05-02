@@ -105,3 +105,26 @@
             path('recipes/', views.recipes, name='scwebapp-recipes'),
             # path('about/', views.about, name='scwebapp-about'),
         ]
+
+10- Connect to Postgre database
+
+    In terminal run commands to be able to use postgre:
+
+        $ sudo apt-get install libpq-dev ( what is it : it contains a minimal set of `PostgreSQL`_ binaries and headers requried for building 3rd-party applications for `PostgreSQL`_.)
+        then run :
+        $ pip install psycopg2-binary ( not the pip install psycopg2 , explictly tell to use 'binary')
+
+
+    Set default database connection parameters in settings.py :
+
+
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': 'SocialChef_DB',
+            'USER' : 'postgreusr',
+            'PASSWORD' : '30071985',
+            'HOST' : '127.0.0.1',
+            'PORT': '5432'
+        }
+    }
