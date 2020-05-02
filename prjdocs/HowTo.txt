@@ -1,0 +1,107 @@
+1-Create the django project (SocialChefPrj) with pycharm ( it creates virtual env automatic )
+2-Create the web app in the project :
+     $ python manage.py startapp scwebapp
+3-Add app to Installed apps setting :
+    in the settings.py file :
+
+    INSTALLED_APPS = [
+        'scwebapp.apps.ScwebappConfig', // add this line
+
+4-Configure the main url path of the web app :
+    put below codes the SocialChefPrj/urls.py file :
+
+        from django.contrib import admin
+        from django.urls import path, include // add the include
+
+        urlpatterns = [
+            path('admin/', admin.site.urls),
+            path('',include('scwebapp.urls')) // add this line to route to the '' path
+            # alternative :
+            # path('socialwebapp/',include('scwebapp.urls')) // add this line to route to the 'socialwebapp' path
+        ]
+
+5- Add a urls.py file to app folder and add codes below :
+
+    from django.urls import path
+    from . import views
+
+    urlpatterns = [
+        path('', views.home, name='scwebapp-home'),
+        # path('about/', views.about, name='scwebapp-about'), //use this to add another route
+    ]
+
+6- Place static files and folders ( css,js,images etc)
+
+    6.1 - create "static" folder under the app folder :
+    6.2 -  in that "static" folder create a folder using the same name of the app :
+             result will be :  scwebapp/static/scwebapp
+    6.3 - create a css,js,images.. folders under this folder :
+             result will be :
+                scwebapp/static/scwebapp/css
+                scwebapp/static/scwebapp/js
+                scwebapp/static/scwebapp/images
+                ....
+
+
+7- Create a base template file :
+
+    7.1 - Create the "templates" folder in the app folder ( not in the project there is already one there !)
+    7.2 - in that "templates" folder create a folder using the same name of the app :
+            result will be : scwebapp/templates/scwebapp
+
+    7.3 - Create a base.html file  :
+
+        {% load static %} // this is so important to use css,js vb folders
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            //this is how to link css files in static folder :
+            <link rel="stylesheet" href="{% static 'scwebapp/css/style.css' %}" />
+            <link rel="shortcut icon" href="{% static '/scwebapp/images/favicon.ico' %}" />
+        </head>
+        <body>
+         {% block content %}{% endblock %} // here is the content area which other pages will use
+        </body>
+        </html>
+
+         note : if you will use an html theme this were you will organize the general layout
+                add scripts & css links meta tags etc.
+
+
+7-Create A contentxxxx.html page :
+
+        In the "templates" create the contentxxxx.html ( e.g : dashboard.html)
+        add codes below :
+
+            {% extends 'scwebapp/base.html' %}
+            {% load static %} // this is so important to use css,js vb folders
+            {% block content %}
+                ...
+                <img src="{% static 'scwebapp/images/intro.jpg' %}" alt="" />
+                ...
+                .. html codes here
+                ...
+             {% endblock content %}
+
+8- Create a home view in the views.py :
+
+    from django.shortcuts import render
+
+    def home(request):
+        # return HttpResponse('<h1>Blog Home Page</h1>')
+        # context = {'posts': posts} // the data ( get it from db / models )
+        # return render(request, 'scwebapp/home.html', context)
+        return render(request, 'scwebapp/home.html', {'title' : 'Title of the blog'})
+
+
+9-Use links as below:
+
+        <a href="{% url 'scwebapp-recipes' %}" title="Recipes">
+
+        here the 'scwebapp-recipes' name corresponds to the url pattern in the urls.py file under app folder :
+
+        urlpatterns = [
+            path('', views.home, name='scwebapp-home'),
+            path('recipes/', views.recipes, name='scwebapp-recipes'),
+            # path('about/', views.about, name='scwebapp-about'),
+        ]
